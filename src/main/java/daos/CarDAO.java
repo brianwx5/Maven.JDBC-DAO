@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarDAO extends DAO<Car> {
@@ -14,9 +15,11 @@ public class CarDAO extends DAO<Car> {
             "(id,make, model, year, color, vin)" +
             "values(?,?,?,?,?,?)";
     private static final String GET_ONE = "SELECT * FROM car WHERE id = ?";
+    private static final String GET_ALL = "SELECT * FROM car";
     private static final String UPDATE = "Update car set make = ?, model = ?, year = ?, " +
             "color = ?, vin = ? WHERE id = ?";
     private static final String DELETE = "DELETE FROM car WHERE id = ?";
+
 
 
     public CarDAO(Connection conn) {
@@ -47,7 +50,28 @@ public class CarDAO extends DAO<Car> {
 
 
     public List<Car> findAll() {
-        return null;
+        List<Car> carList = new ArrayList<>();
+        Car car = null;
+        try (PreparedStatement pstmt = DBUtils.getConnection().prepareStatement(GET_ALL)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                car = new Car();
+                car.setId(rs.getInt("Id"));
+                car.setMake(rs.getString("Make"));
+                car.setModel(rs.getString("Model"));
+                car.setYear(rs.getInt("Year"));
+                car.setColor(rs.getString("Color"));
+                car.setVin(rs.getString("Vin"));
+                carList.add(car);
+            }
+        } catch (SQLException e) {
+            DBUtils.showErrorMessage(e);
+        }
+
+        for (int i = 1; i < carList.size() ; i++) {
+            carList.get(i).toString();
+        }
+        return carList;
     }
 
 

@@ -20,9 +20,10 @@ public class DaoDemo {
             createdCar.setColor("Blue");
             createdCar.setVin("FJ49DVK29FJLOFK34");
 
-            System.out.println(carDAO.create(createdCar));
+            //System.out.println(carDAO.create(createdCar));
             //carDAO.delete(7);
             //System.out.println(carDAO.findById(1).getYear());
+            System.out.println(carDAO.findAll());
         }
 
         catch (SQLException e) {
